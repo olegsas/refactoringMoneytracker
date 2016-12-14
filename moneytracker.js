@@ -122,19 +122,21 @@ function makeMonthlyTransactionsUniversal(start_Day, finish_Day, Month, Year){
             var transactionCurrency = StudentH.Currency[i];
             var transactionAccount = StudentH.Account[i];
             for(var j=0; j<Rate; j++){
-                if(transaction_Date[j] >= DATE_OF_DENOMINATION){
-                    if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Byr")){
+                    if((StudentH.Currency[i] === "Byn")&&(transaction_Date[j] >= DATE_OF_DENOMINATION)){
+                       WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount) 
+                    };
+                    if((StudentH.Currency[i] === "Byr")&&(transaction_Date[j] < DATE_OF_DENOMINATION)){
+                        WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
                              transactionAmount[j], transactionCurrency, transactionAccount)
                     }
-                }
-                if(transaction_Date[j] < DATE_OF_DENOMINATION){
-                    if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
-                             transactionAmount[j], transactionCurrency, transactionAccount)
-                    }
-                }
 
+                }else{
+                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount)
+                    // any currency we do not care of the denomination
+                }
             }
         }
     }
@@ -261,17 +263,20 @@ function makeYearlyTransactionsUniversal(start_Day, last_Day, Year){
             var transactionAccount = StudentH.Account[i];
 
             for(var j=0; j<Rate; j++){
-                if(transaction_Date[j] >= DATE_OF_DENOMINATION){
-                    if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Byr")){
+                    if((StudentH.Currency[i] === "Byn")&&(transaction_Date[j] >= DATE_OF_DENOMINATION)){
+                       WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount) 
+                    };
+                    if((StudentH.Currency[i] === "Byr")&&(transaction_Date[j] < DATE_OF_DENOMINATION)){
+                        WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
                              transactionAmount[j], transactionCurrency, transactionAccount)
                     }
-                }
-                if(transaction_Date[j] < DATE_OF_DENOMINATION){
-                    if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
+
+                }else{
                     WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
                              transactionAmount[j], transactionCurrency, transactionAccount)
-                    }
+                    // any currency we do not care of the denomination
                 }
 
             }
@@ -310,19 +315,21 @@ function makeWeeklyTransactionsUniversal(startTimeDay, lastTimeDay){
             var transactionCurrency = StudentH.Currency[i];
             var transactionAccount = StudentH.Account[i];
             for(var j=0; j<Rate; j++){
-                if(transaction_Date[j] >= DATE_OF_DENOMINATION){
-                    if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Byr")){
+                    if((StudentH.Currency[i] === "Byn")&&(transaction_Date[j] >= DATE_OF_DENOMINATION)){
+                       WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount) 
+                    };
+                    if((StudentH.Currency[i] === "Byr")&&(transaction_Date[j] < DATE_OF_DENOMINATION)){
+                        WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
                              transactionAmount[j], transactionCurrency, transactionAccount)
                     }
-                }
-                if(transaction_Date[j] < DATE_OF_DENOMINATION){
-                    if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
-                             transactionAmount[j], transactionCurrency, transactionAccount)
-                    }
-                }
 
+                }else{
+                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount)
+                    // any currency we do not care of the denomination
+                }
             }
         }          
 	}
