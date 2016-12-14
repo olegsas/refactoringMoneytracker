@@ -279,114 +279,50 @@ function makeYearlyTransactionsUniversal(start_Day, last_Day, Year){
     }
 }
 
-function makeWeeklyTransactions(startTimeDay, lastTimeDay){
+function makeWeeklyTransactionsUniversal(startTimeDay, lastTimeDay){
+    var Rate;// the rate of the period - how many times we make the transaction
+    var transaction_Date = [];
+    var transactionAmount = [];
+    var Number_of_the_name_of_transaction = [];
+    var transactionNameOnly = [];
     for(i=1; i<StudentH.len+1; i++){// we check the transaction list
-    
-    	if(
-        	(StudentH.Period[i] === "Week") && 
-            (StudentH.Rate[i] === 1)){
-
-            var transactionTimeDay = Math.floor(Math.random()*(lastTimeDay - startTimeDay) + startTimeDay);
-            var transaction_Date = new Date();
-            transaction_Date.setTime(transactionTimeDay*1000*60*60*24);// Data object format
-            var transactionAmount = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i])//returns  amount
-            var Number_of_the_name_of_transaction = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1
-            var operationName =  StudentH.OperationName[i]
+    	if(StudentH.Period[i] === "Week"){
+            Rate = StudentH.Rate[i];
+            var transactionDays = makeRandomDays(startTimeDay, lastTimeDay, Rate);
+            // we have an array, the length = Rate
+            for(var j=0; j<Rate; j++){
+                transaction_Date[j] = new Date();
+                transaction_Date[j].setTime(transactionTimeDays[j]*1000*60*60*24);// Data object format
+                // we convert it into an object format
+            };
+            for(var j=0; j<Rate; j++){
+                transactionAmount[j] = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i]);//returns  amount
+            };
+            for(var j=0; j<Rate; j++){
+               Number_of_the_name_of_transaction[j] = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1 
+            };
+            var operationName =  StudentH.OperationName[i];
             var transactionNameA = namesH[operationName];
-            var transactionNameOnly = transactionNameA[Number_of_the_name_of_transaction];
+            for(var j=0; j<Rate; j++){
+                transactionNameOnly[j] = transactionNameA[Number_of_the_name_of_transaction[j]];
+            };
             var transactionType = StudentH.Type[i];
             var transactionCurrency = StudentH.Currency[i];
             var transactionAccount = StudentH.Account[i];
-
-            if(transaction_Date >= DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date,transactionType, operationName, transactionNameOnly, 
-                             transactionAmount, transactionCurrency, transactionAccount)
+            for(var j=0; j<Rate; j++){
+                if(transaction_Date[j] >= DATE_OF_DENOMINATION){
+                    if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
+                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount)
+                    }
                 }
-            }
-
-            if(transaction_Date < DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date,transactionType, operationName, transactionNameOnly, 
-                             transactionAmount, transactionCurrency, transactionAccount)
+                if(transaction_Date[j] < DATE_OF_DENOMINATION){
+                    if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
+                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount)
+                    }
                 }
-            }
-        }          
-	}
-}
 
-function makeWeeklyTransactionsTriple(startTimeDay, lastTimeDay){
-    for(i=1; i<StudentH.len+1; i++){// we check the transaction list
-    	
-    	if(
-        	(StudentH.Period[i] === "Week") && 
-            (StudentH.Rate[i] === 3)){
-
-            var transactionTimeDays = makeThreeRandom(startTimeDay, lastTimeDay);// 
-            // we have transactionTimeDays[0] to transactionTimeDays[2];
-            var transaction_Date1 = new Date();
-            transaction_Date1.setTime(transactionTimeDays[0]*1000*60*60*24);// Data object format
-            var transaction_Date2 = new Date();
-            transaction_Date2.setTime(transactionTimeDays[1]*1000*60*60*24);// Data object format
-            var transaction_Date3 = new Date();
-            transaction_Date3.setTime(transactionTimeDays[2]*1000*60*60*24);// Data object format
-            // we have transaction_Date1...transaction_Date3
-
-            var transactionAmount1 = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i])//returns  amount
-            var transactionAmount2 = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i])//returns  amount
-            var transactionAmount3 = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i])//returns  amount
-            var Number_of_the_name_of_transaction1 = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1
-            var Number_of_the_name_of_transaction2 = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1
-            var Number_of_the_name_of_transaction3 = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1
-            var operationName =  StudentH.OperationName[i]
-            var transactionNameA = namesH[operationName];
-            var transactionNameOnly1 = transactionNameA[Number_of_the_name_of_transaction1];
-            var transactionNameOnly2 = transactionNameA[Number_of_the_name_of_transaction2];
-            var transactionNameOnly3 = transactionNameA[Number_of_the_name_of_transaction3];
-            var transactionType = StudentH.Type[i];
-            var transactionCurrency = StudentH.Currency[i];
-            var transactionAccount = StudentH.Account[i];
-
-            if(transaction_Date1 >= DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date1,transactionType, operationName, transactionNameOnly1, 
-                             transactionAmount1, transactionCurrency, transactionAccount)
-                }
-            }
-
-            if(transaction_Date1 < DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date1,transactionType, operationName, transactionNameOnly1, 
-                             transactionAmount1, transactionCurrency, transactionAccount)
-                }
-            }
-
-            if(transaction_Date2 >= DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date2,transactionType, operationName, transactionNameOnly2, 
-                             transactionAmount2, transactionCurrency, transactionAccount)
-                }
-            }
-
-            if(transaction_Date2 < DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date2,transactionType, operationName, transactionNameOnly2, 
-                             transactionAmount2, transactionCurrency, transactionAccount)
-                }
-            }
-
-            if(transaction_Date3 >= DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date3,transactionType, operationName, transactionNameOnly3, 
-                             transactionAmount3, transactionCurrency, transactionAccount)
-                }
-            }
-
-            if(transaction_Date3 < DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date3,transactionType, operationName, transactionNameOnly3, 
-                             transactionAmount3, transactionCurrency, transactionAccount)
-                }
             }
         }          
 	}
@@ -463,8 +399,7 @@ function runWeekly(startDate, finishDate){// global function runs transaction ge
     
     var lastTimeDay = startTimeDay + WEEK - 1;// first week - we count it from the begining of the zero point
 
-    makeWeeklyTransactions(startTimeDay, lastTimeDay);
-    makeWeeklyTransactionsTriple(startTimeDay, lastTimeDay);// we call this functions for the 1-st week
+    makeWeeklyTransactionsUniversal(startTimeDay, lastTimeDay);// we call this functions for the 1-st week
     
     var zTimeDay = lastTimeDay + 1;//the first day of the next week
 
@@ -474,8 +409,7 @@ function runWeekly(startDate, finishDate){// global function runs transaction ge
         cycleTimeDayStart = zTimeDay;// 1-st day of the next week
         cycleTimeDayFinish = cycleTimeDayStart + WEEK - 1;// last day of the next week
         if(cycleTimeDayFinish <= finishTimeDay){
-            makeWeeklyTransactions(cycleTimeDayStart, cycleTimeDayFinish);
-            makeWeeklyTransactionsTriple(cycleTimeDayStart, cycleTimeDayFinish);
+            makeWeeklyTransactionsUniversal(cycleTimeDayStart, cycleTimeDayFinish);
             // we are in a full-time week
             // we ignore short last week
         }
@@ -493,7 +427,7 @@ var StudentH = oneDayOfUser();// we take this array;
 function runAll(begin, end){
     runYearly(begin, end);
     runMonthly(begin, end);
-    //runWeekly(begin, end);
+    runWeekly(begin, end);
 }
 
 function dataRates(){
