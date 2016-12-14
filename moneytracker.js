@@ -492,7 +492,7 @@ var StudentH = oneDayOfUser();// we take this array;
 
 function runAll(begin, end){
     runYearly(begin, end);
-    //runMonthly(begin, end);
+    runMonthly(begin, end);
     //runWeekly(begin, end);
 }
 
