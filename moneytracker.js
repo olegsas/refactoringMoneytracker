@@ -77,64 +77,6 @@ function WriteName(name){
     db.names.insert({"name": name});
 }// we create names collection
 
-function makeMonthlyTransactions(start_Day, finish_Day, Month, Year){// we check the list of transactions and if we have a monthly one we generate a random day and make a transaction
-    //there are arrays typeA[1]...typeA[length] - for every transaction
-    // if we have a full month then start_Day is 1 and if we have the first month we use the start_Day
-    
-    for(i=1; i<StudentH.len+1; i++){// we check the transaction list
-        if(
-            (StudentH.Period[i] === "Month") && 
-            (StudentH.Rate[i] === 1)){
-        
-            var transactionDay = Math.floor(Math.random()*(finish_Day - start_Day) + start_Day);
-            var transaction_Date = new Date();// we convert it into an object format
-            transaction_Date.setFullYear(Year);
-            transaction_Date.setMonth(Month);
-            transaction_Date.setDate(transactionDay);
-            var transactionAmount = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i])//returns  amount 
-            // make a monthly transaction, we need to call random day
-            var Number_of_the_name_of_transaction = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1
-            // Math.random()<1 that`s why name_of_transactions<NUMBER_OF_CATEGORY_NAMES
-            var operationName =  StudentH.OperationName[i]
-            var transactionNameA = namesH[operationName];
-            //db.names.find({"transaction":StudentH.OperationName[i]},{"names":1,_id:0}).toArray();
-            // we have an object from the cursor with transactions names of the operation
-            var transactionNameOnly = transactionNameA[Number_of_the_name_of_transaction];
-            var transactionType = StudentH.Type[i];
-            var transactionCurrency = StudentH.Currency[i];
-            var transactionAccount = StudentH.Account[i];
-            /*=============================*/
-            // we have
-            // transactionNameOnly - the name of the transaction
-            // operationName - the name of operation the category of transaction
-            // transactionDay - the day of the transaction
-            // Month, Year - from the arguments of the function
-            // Question - have I make the variables like var Month = Month?
-            // transactionType - the type of the transaction
-            // transactionAmount - the amount of the transaction
-            // transactionCurrency - the currency of the transaction
-            // transactionAccount - the account for the transaction
-
-            
-            if(transaction_Date >= DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date,transactionType, operationName, transactionNameOnly, 
-                             transactionAmount, transactionCurrency, transactionAccount)
-                }
-            }
-
-            if(transaction_Date < DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date,transactionType, operationName, transactionNameOnly, 
-                             transactionAmount, transactionCurrency, transactionAccount)
-                }
-            }
-            // this 2 if-conditions checks if the denomination time, and choose the correct currency of the operation
-            // use all this variables);//we write a transaction and only we need to give a random name for it
-        }
-    }
-}
-
 function makeRandomDays(startDay, finishDay, Rate){
     var arr = [];
     var n;
@@ -147,86 +89,53 @@ function makeRandomDays(startDay, finishDay, Rate){
 return arr;
 }
 
-function makeMonthlyTransactionsTwice(start_Day, finish_Day, Month, Year){
+function makeMonthlyTransactionsUniversal(start_Day, finish_Day, Month, Year){
+    var Rate;// the rate of the period - how many times we make the transaction
+    var transaction_Date = [];
+    var transactionAmount = [];
+    var Number_of_the_name_of_transaction = [];
+    var transactionNameOnly = [];
     for(i=1; i<StudentH.len+1; i++){// we check the transaction list
-        if(
-            (StudentH.Period[i] === "Month") && 
-            (StudentH.Rate[i] === 2)){
-        
-            var transactionDays = makeTwoRandom(start_Day, finish_Day);// 
-            // we have transactionDays[0] and transactionDays[1];
-            var transaction_Date1 = new Date();// we convert it into an object format
-            transaction_Date1.setFullYear(Year);
-            transaction_Date1.setMonth(Month);
-            transaction_Date1.setDate(transactionDays[0]);
-
-            var transaction_Date2 = new Date();// we convert it into an object format
-            transaction_Date2.setFullYear(Year);
-            transaction_Date2.setMonth(Month);
-            transaction_Date2.setDate(transactionDays[1]);
-            // we have got transaction_Date1 and transaction_Date2
-
-
-            var transactionAmount1 = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i])//returns  amount 
-            var transactionAmount2 = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i])//returns  amount
-            // make a monthly transaction, we need to call random day
-            var Number_of_the_name_of_transaction1 = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1
-            var Number_of_the_name_of_transaction2 = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1
-            // Math.random()<1 that`s why name_of_transactions<NUMBER_OF_CATEGORY_NAMES
-            var operationName =  StudentH.OperationName[i]
+        if(StudentH.Period[i] === "Month"){
+            Rate = StudentH.Rate[i];
+            var transactionDays = makeRandomDays(start_Day, finish_Day, Rate);
+            // we have an array, the length = Rate
+            for(var j=0; j<Rate; j++){
+                transaction_Date[j] = new Date();
+                transaction_Date[j].setFullYear(Year);
+                transaction_Date[j].setMonth(Month);
+                transaction_Date[j].setDate(transactionDays[j])
+                // we convert it into an object format
+            };
+            for(var j=0; j<Rate; j++){
+                transactionAmount[j] = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i]);//returns  amount
+            };
+            for(var j=0; j<Rate; j++){
+               Number_of_the_name_of_transaction[j] = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1 
+            };
+            var operationName =  StudentH.OperationName[i];
             var transactionNameA = namesH[operationName];
-            // we have an object from the cursor with transactions names of the operation
-            var transactionNameOnly1 = transactionNameA[Number_of_the_name_of_transaction1];
-            var transactionNameOnly2 = transactionNameA[Number_of_the_name_of_transaction2];
-
+            for(var j=0; j<Rate; j++){
+                transactionNameOnly[j] = transactionNameA[Number_of_the_name_of_transaction[j]];
+            };
             var transactionType = StudentH.Type[i];
             var transactionCurrency = StudentH.Currency[i];
             var transactionAccount = StudentH.Account[i];
-            /*=============================*/
-            // we have
-            // transactionNameOnly1 - the name of the transaction
-            // transactionNameOnly2
-            // operationName - the name of operation the category of transaction
-            // transaction_Date1 - the day of the transaction
-            // transaction_Date2
-            // Month, Year - from the arguments of the function
-            // Question - have I make the variables like var Month = Month?
-            // transactionType - the type of the transaction
-            // transactionAmount1 - the amount of the transaction
-            // transactionAmount2
-            // transactionCurrency - the currency of the transaction
-            // transactionAccount - the account for the transaction
-
-            
-            if(transaction_Date1 >= DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date1,transactionType, operationName, transactionNameOnly1, 
-                             transactionAmount1, transactionCurrency, transactionAccount)
+            for(var j=0; j<Rate; j++){
+                if(transaction_Date[j] >= DATE_OF_DENOMINATION){
+                    if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
+                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount)
+                    }
                 }
+                if(transaction_Date[j] < DATE_OF_DENOMINATION){
+                    if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
+                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount)
+                    }
+                }
+
             }
-
-            if(transaction_Date1 < DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date1,transactionType, operationName, transactionNameOnly1, 
-                             transactionAmount1, transactionCurrency, transactionAccount)
-                }
-            }
-            // this 2 if-conditions checks if the denomination time, and choose the correct currency of the operation
-            // use all this variables);//we write a transaction and only we need to give a random name for it
-
-          if(transaction_Date2 >= DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date2,transactionType, operationName, transactionNameOnly2, 
-                             transactionAmount2, transactionCurrency, transactionAccount)
-                }
-            }
-
-            if(transaction_Date2 < DATE_OF_DENOMINATION){
-                if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
-                    WriteTransaction(transaction_Date2,transactionType, operationName, transactionNameOnly2, 
-                             transactionAmount2, transactionCurrency, transactionAccount)
-                }
-            }  
         }
     }
 }
@@ -243,8 +152,7 @@ function runMonthly(startDate, finishDate){// global function runs transaction g
 
     var last_Day = max_day_month; // for the first month
         
-    makeMonthlyTransactions(start_Day, last_Day, start_Month, start_Year);
-    makeMonthlyTransactionsTwice(start_Day, last_Day, start_Month, start_Year);// we call this functions
+    makeMonthlyTransactionsUniversal(start_Day, last_Day, start_Month, start_Year);// we call this functions
     //to make all monthly transactions for the first month
 
        
@@ -275,13 +183,11 @@ function runMonthly(startDate, finishDate){// global function runs transaction g
 	        cycleDATEfinish.setDate(cycleDATEfinish.getDate()+cycle_day_in_month-1);
     
 	        if(cycleDATEfinish > finishDATE){
-	            makeMonthlyTransactions(cycleDayFirst, finishDATE.getDate(), cycleMonth, cycleYear);
-	            makeMonthlyTransactionsTwice(cycleDayFirst, finishDATE.getDate(), cycleMonth, cycleYear);
+	            makeMonthlyTransactionsUniversal(cycleDayFirst, finishDATE.getDate(), cycleMonth, cycleYear);
 	            //we are in the last short month
 	        }
 	        else{
-	            makeMonthlyTransactions(cycleDayFirst, cycle_day_in_month, cycleMonth, cycleYear);
-	            makeMonthlyTransactionsTwice(cycleDayFirst, cycle_day_in_month, cycleMonth, cycleYear);
+	            makeMonthlyTransactionsUniversal(cycleDayFirst, cycle_day_in_month, cycleMonth, cycleYear);
 	            //we work with full month
 	        }
     
