@@ -601,11 +601,51 @@ function makeYearlyTransactionsSixTimes(start_Day, last_Day, Year){
 
 function makeYearlyTransactionsUniversal(start_Day, last_Day, Year){
     var Rate;// the rate of the period - how many times we make the transaction
+    var transaction_Date = [];
+    var transactionAmount = [];
+    var Number_of_the_name_of_transaction = [];
+    var transactionNameOnly = [];
     for(i=1; i<StudentH.len+1; i++){// we check the transaction list
         if(StudentH.Period[i] === "Year"){// we check year period only
             Rate = StudentH.Rate[i];
             var transactionDays = makeRandomDays(start_Day, last_Day, Rate);
+            // we have an array, the length = Rate
+            for(let j=0; j<Rate; j++){
+                transaction_Date[j] = new Date(Year, 0, transactionDays[j]);
+                // we convert it into an object format
+            };
+            for(let j=0; j<Rate; j++){
+                transactionAmount[j] = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i])//returns  amount
+            };
+            for(let j=0; j<Rate; j++){
+               Number_of_the_name_of_transaction[j] = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1 
+            };
+            var operationName =  StudentH.OperationName[i];
+            var transactionNameA = namesH[operationName];
+            for(let j=0; j<Rate; j++){
+                transactionNameOnly[j] = transactionNameA[Number_of_the_name_of_transaction[j]];
+            };
+            var transactionType = StudentH.Type[i];
+            var transactionCurrency = StudentH.Currency[i];
+            var transactionAccount = StudentH.Account[i];
+
+            for(let j=0; j<Rate; j++){
+                if(transaction_Date[j] >= DATE_OF_DENOMINATION){
+                    if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
+                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount)
+                    }
+                }
+                if(transaction_Date[j] < DATE_OF_DENOMINATION){
+                    if((StudentH.Currency[i] === "Byr") || (StudentH.Currency[i] === "Usd")){
+                    WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
+                             transactionAmount[j], transactionCurrency, transactionAccount)
+                    }
+                }
+
+            };
         }
+    }
 }
 
 function makeWeeklyTransactions(startTimeDay, lastTimeDay){
@@ -732,8 +772,7 @@ function runYearly(startDate, finishDate){// global function runs transaction ge
 
     var last_Day = DaysInYear(start_Year);// it will be 365 or 366
 
-    makeYearlyTransactionsTriple(start_Day, last_Day, start_Year);
-    makeYearlyTransactionsSixTimes(start_Day, last_Day, start_Year);// we call this functions
+    makeYearlyTransactionsUniversal(start_Day, last_Day, start_Year);// we call this functions
     
     var zDATE = new Date(start_Year, 0, last_Day);
         zDATE.setDate(zDATE.getDate()+1);
@@ -763,15 +802,13 @@ function runYearly(startDate, finishDate){// global function runs transaction ge
         cycleDATEfinish.setDate(cycleDATEfinish.getDate()+cycle_day_in_year-1);
 
         if(cycleDATEfinish > finishDATE){
-            makeYearlyTransactionsTriple(cycleDayFirst, toPlainDays(finishDATE.getDate(), finishDATE.getMonth(), finishDATE.getFullYear()), cycleYear);
-            makeYearlyTransactionsSixTimes(cycleDayFirst, toPlainDays(finishDATE.getDate(), finishDATE.getMonth(), finishDATE.getFullYear()), cycleYear);
+            makeYearlyTransactionsUniversal(cycleDayFirst, toPlainDays(finishDATE.getDate(), finishDATE.getMonth(), finishDATE.getFullYear()), cycleYear);
             //we are in the last short month
             //toPlainDays(anyDATA) returns how many days are between the 1-st January
             //and the anyDATA
         }
         else{
-            makeYearlyTransactionsTriple(cycleDayFirst, cycle_day_in_year, cycleYear);
-            makeYearlyTransactionsSixTimes(cycleDayFirst, cycle_day_in_year, cycleYear);
+            makeYearlyTransactionsUniversal(cycleDayFirst, cycle_day_in_year, cycleYear);
             //we work with full month
         }
 
@@ -824,8 +861,8 @@ var StudentH = oneDayOfUser();// we take this array;
 
 function runAll(begin, end){
     runYearly(begin, end);
-    runMonthly(begin, end);
-    runWeekly(begin, end);
+    //runMonthly(begin, end);
+    //runWeekly(begin, end);
 }
 
 function dataRates(){
