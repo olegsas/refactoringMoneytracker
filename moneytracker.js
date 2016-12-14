@@ -288,7 +288,7 @@ function makeWeeklyTransactionsUniversal(startTimeDay, lastTimeDay){
     for(i=1; i<StudentH.len+1; i++){// we check the transaction list
     	if(StudentH.Period[i] === "Week"){
             Rate = StudentH.Rate[i];
-            var transactionDays = makeRandomDays(startTimeDay, lastTimeDay, Rate);
+            var transactionTimeDays = makeRandomDays(startTimeDay, lastTimeDay, Rate);
             // we have an array, the length = Rate
             for(var j=0; j<Rate; j++){
                 transaction_Date[j] = new Date();
