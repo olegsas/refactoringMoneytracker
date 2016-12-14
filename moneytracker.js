@@ -610,26 +610,26 @@ function makeYearlyTransactionsUniversal(start_Day, last_Day, Year){
             Rate = StudentH.Rate[i];
             var transactionDays = makeRandomDays(start_Day, last_Day, Rate);
             // we have an array, the length = Rate
-            for(let j=0; j<Rate; j++){
+            for(var j=0; j<Rate; j++){
                 transaction_Date[j] = new Date(Year, 0, transactionDays[j]);
                 // we convert it into an object format
             };
-            for(let j=0; j<Rate; j++){
-                transactionAmount[j] = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i])//returns  amount
+            for(var j=0; j<Rate; j++){
+                transactionAmount[j] = randomMoney(StudentH.AmountMin[i], StudentH.AmountMax[i]);//returns  amount
             };
-            for(let j=0; j<Rate; j++){
+            for(var j=0; j<Rate; j++){
                Number_of_the_name_of_transaction[j] = Math.floor((Math.random()*NUMBER_OF_CATEGORY_NAMES));//0...NUMBER-1 
             };
             var operationName =  StudentH.OperationName[i];
             var transactionNameA = namesH[operationName];
-            for(let j=0; j<Rate; j++){
+            for(var j=0; j<Rate; j++){
                 transactionNameOnly[j] = transactionNameA[Number_of_the_name_of_transaction[j]];
             };
             var transactionType = StudentH.Type[i];
             var transactionCurrency = StudentH.Currency[i];
             var transactionAccount = StudentH.Account[i];
 
-            for(let j=0; j<Rate; j++){
+            for(var j=0; j<Rate; j++){
                 if(transaction_Date[j] >= DATE_OF_DENOMINATION){
                     if((StudentH.Currency[i] === "Byn") || (StudentH.Currency[i] === "Usd")){
                     WriteTransaction(transaction_Date[j],transactionType, operationName, transactionNameOnly[j], 
@@ -643,7 +643,7 @@ function makeYearlyTransactionsUniversal(start_Day, last_Day, Year){
                     }
                 }
 
-            };
+            }
         }
     }
 }
