@@ -135,34 +135,10 @@ function makeMonthlyTransactions(start_Day, finish_Day, Month, Year){// we check
     }
 }
 
-function makeTwoRandom(startDay, finishDay){
+function makeRandomDays(startDay, finishDay, Rate){
     var arr = [];
     var n;
-    while(arr.length<2){
-        n = Math.floor(Math.random()*(finishDay - startDay) + startDay);
-        if(arr.indexOf(n) == -1){// the mistake was to use = instead of == or even ===
-            arr.push(n);
-        }
-    }
-return arr;
-}
-
-function makeThreeRandom(startDay, finishDay){
-    var arr = [];
-    var n;
-    while(arr.length<3){
-        n = Math.floor(Math.random()*(finishDay - startDay) + startDay);
-        if(arr.indexOf(n) == -1){// the mistake was to use = instead of == or even ===
-            arr.push(n);
-        }
-    }
-return arr;
-}
-
-function makeSixRandom(startDay, finishDay){
-    var arr = [];
-    var n;
-    while(arr.length<6){
+    while(arr.length<Rate){
         n = Math.floor(Math.random()*(finishDay - startDay) + startDay);
         if(arr.indexOf(n) == -1){// the mistake was to use = instead of == or even ===
             arr.push(n);
@@ -622,6 +598,15 @@ function makeYearlyTransactionsSixTimes(start_Day, last_Day, Year){
 		}
 	}
 };
+
+function makeYearlyTransactionsUniversal(start_Day, last_Day, Year){
+    var Rate;// the rate of the period - how many times we make the transaction
+    for(i=1; i<StudentH.len+1; i++){// we check the transaction list
+        if(StudentH.Period[i] === "Year"){// we check year period only
+            Rate = StudentH.Rate[i];
+            var transactionDays = makeRandomDays(start_Day, last_Day, Rate);
+        }
+}
 
 function makeWeeklyTransactions(startTimeDay, lastTimeDay){
     for(i=1; i<StudentH.len+1; i++){// we check the transaction list
