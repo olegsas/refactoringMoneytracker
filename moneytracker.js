@@ -2,6 +2,8 @@
 const NUMBER_OF_CATEGORY_NAMES = 4;//how many names are in one category
 const DATE_OF_DENOMINATION = new Date("2016-07-01");//the date of denomination, the constants
 const WEEK = 7;//days in a week
+var NamesIdH = {}; // the object with fields {name: ObjectID} for binding with transaction collection
+var WalletsIdH = {}; // the object with fields {name: ObjectID} for binding with transaction collection
 
 function randomMoney(min, max){
     var amount = Math.floor(Math.random()*(max-min) + min);
