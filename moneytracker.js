@@ -68,7 +68,8 @@ function standartDate(anyDay){// this function normalize string date into a Date
 function WriteTransaction(Date, Type, Category, Name, Amount, Currency, Account){
     //Date is in standart format
     db.transactions.insert({"Date": Date, "Type": Type, "Category": Category, "Name": Name,
-                           "Amount": Amount, "Currency": Currency, "Account": Account, "Wallet_id":WalletsIdH[Account]});
+                           "Amount": Amount, "Currency": Currency, "Account": Account, 
+                           "Wallet_id":WalletsIdH[Account],"Category_id": NamesIdH[Category]});
 }// we insert document into the collection
 
 function WriteWallet(name, amount){
@@ -81,6 +82,9 @@ function WriteWallet(name, amount){
 
 function WriteName(name){
     db.names.insert({"name": name});
+    var Cursor = db.names.find({"name": name}).toArray();
+    var Element = Cursor[0];
+    NamesIdH[name] = Element['_id'];
 }// we create names collection
 
 function makeRandomDays(startDay, finishDay, Rate){
