@@ -68,11 +68,15 @@ function standartDate(anyDay){// this function normalize string date into a Date
 function WriteTransaction(Date, Type, Category, Name, Amount, Currency, Account){
     //Date is in standart format
     db.transactions.insert({"Date": Date, "Type": Type, "Category": Category, "Name": Name,
-                           "Amount": Amount, "Currency": Currency, "Account": Account});
+                           "Amount": Amount, "Currency": Currency, "Account": Account, "Wallet_id":WalletsIdH[Account]});
 }// we insert document into the collection
 
 function WriteWallet(name, amount){
     db.wallets.insert({"name": name, "amount": amount});
+    var simplyIdA = db.wallets.find({"name": name}).toArray();
+    var simplyId = simplyIdA[0];
+    print("simplyId = " + simplyId['_id']);
+    WalletsIdH[name] = simplyId;// we store ObjectID from the database into the hash
 }// we create wallets collection
 
 function WriteName(name){
@@ -618,6 +622,8 @@ makeWallets(StudentH.Account);// StudentH.AccountA - is the array of the transac
 makeNames(StudentH.OperationName);
 
 var namesH = makeTransactionNames();// namesH is an object with transaction names;
+
+print("WalletsIdH.PurseByr - "+WalletsIdH.PurseByr);
 
 
 runAll(findStartData(ratesH), findFinishData(ratesH));//start date and final date - in my task 2016
