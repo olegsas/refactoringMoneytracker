@@ -76,7 +76,6 @@ function WriteWallet(name, amount){
     db.wallets.insert({"name": name, "amount": amount});
     var Cursor = db.wallets.find({"name": name}).toArray();
     var Element = Cursor[0];
-    print("simplyId = " + Element['_id']);
     WalletsIdH[name] = Element['_id'];// we store ObjectID from the database into the hash
 }// we create wallets collection
 
@@ -626,8 +625,5 @@ makeWallets(StudentH.Account);// StudentH.AccountA - is the array of the transac
 makeNames(StudentH.OperationName);
 
 var namesH = makeTransactionNames();// namesH is an object with transaction names;
-
-print("WalletsIdH.PurseByr - "+WalletsIdH.PurseByr);
-
 
 runAll(findStartData(ratesH), findFinishData(ratesH));//start date and final date - in my task 2016
