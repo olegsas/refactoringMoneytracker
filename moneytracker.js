@@ -73,10 +73,10 @@ function WriteTransaction(Date, Type, Category, Name, Amount, Currency, Account)
 
 function WriteWallet(name, amount){
     db.wallets.insert({"name": name, "amount": amount});
-    var simplyIdA = db.wallets.find({"name": name}).toArray();
-    var simplyId = simplyIdA[0];
-    print("simplyId = " + simplyId['_id']);
-    WalletsIdH[name] = simplyId;// we store ObjectID from the database into the hash
+    var Cursor = db.wallets.find({"name": name}).toArray();
+    var Element = Cursor[0];
+    print("simplyId = " + Element['_id']);
+    WalletsIdH[name] = Element['_id'];// we store ObjectID from the database into the hash
 }// we create wallets collection
 
 function WriteName(name){
